@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376 -->
+<html lang="en" class="gr__webcms3_cse_unsw_edu_au"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="1584014764##a13f19c294f2849a223b53aa85625665ea863045">
+    <title>Assignment-1: MapReduce |  COMP9313 19T3 | WebCMS3</title>
+
+    <link rel="icon" href="https://webcms3.cse.unsw.edu.au/static/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://webcms3.cse.unsw.edu.au/static/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" id="theme" href="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/indigo.theme.8d643db69e17f5a7728fb145d33d22bf.css">
+
+
+  <style type="text/css"></style><style type="text/css">.select-box{position:absolute;border:1px solid #ddd;border-radius:3px;box-shadow:0 0 5px rgba(0,0,0,.1);background:#fff;z-index:1000}.mention{text-decoration:none!important;color:#000!important;background-color:#dce6f8;padding:0;margin-right:.5em}.user-select{list-style-type:none;list-style:none;margin:0;padding:0;font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5}.user-select li{display:block;padding:5px 10px;font-weight:600;cursor:pointer;border-bottom:1px solid #ddd}.user-select li small{font-weight:400;color:#767676}.user-select .selected small{color:#fff}.user-select .selected{background-color:#4078c0;color:#fff}</style></head>
+  <body role="document" id="webcms3top" data-gr-c-s-loaded="true">
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="https://webcms3.cse.unsw.edu.au/">WebCMS3</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+                <li><a href="https://webcms3.cse.unsw.edu.au/COMP9517/20T1/" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Computer Vision">COMP9517</a></li>
+                <li><a href="https://webcms3.cse.unsw.edu.au/COMP9991/20T1/" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="PG Research Project">COMP9991</a></li>
+
+
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://webcms3.cse.unsw.edu.au/search" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Search Courses"><i class="fa fa-search"></i></a></li>
+              <li class="dropdown">
+                <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                  <div class="nav-profile-mask">
+                    <img class="profile_picture" src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/IMG_0249.jpg">
+                  </div>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="https://webcms3.cse.unsw.edu.au/users/z5223541"><i class="fa fa-user"></i> Profile</a></li>
+                  <li><a href="https://webcms3.cse.unsw.edu.au/users/z5223541/settings"><i class="fa fa-cog"></i> Settings</a></li>
+                  <li class="divider"></li>
+                  <li><a href="https://webcms3.cse.unsw.edu.au/logout"><i class="fa fa-sign-in"></i> Logout</a></li>
+                </ul>
+              </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-left">
+          <div class="col-sm-3 col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div class="sidebar hidden-print">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+      <h4 class="panel-title"><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/">COMP9313</a> <small>19T3</small></h4>
+    </div>
+
+  </div>
+
+  <ul class="list-group">
+            <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/">Home</a>
+        </li>        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/outline">Course Outline</a>
+        </li>        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/forums/">Forums</a>
+        </li>        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/timetable">Timetable</a>
+        </li>        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/groups/">Groups</a>
+        </li>
+        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#side-menu6" data-toggle="collapse" data-parent=".sidebar">
+            Staff <span class="caret"></span>
+          </a>
+        </li>
+        <ul class="list-group collapse" id="side-menu6">
+          
+
+                     <li class="list-group-item">
+    <a href="https://webcms3.cse.unsw.edu.au/users/z3445371">Morty Al-Banna</a>
+    <span class="label label-primary">Lecturer</span>
+  </li>
+
+        <li class="list-group-item">
+    <a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a>
+    <span class="label label-primary">Course Admin</span>
+  </li>
+
+        <li class="list-group-item">
+    <a href="https://webcms3.cse.unsw.edu.au/users/z5138589">Mohammadali Yaghoubzadehfard</a>
+    <span class="label label-primary">Course Admin</span>
+  </li>
+
+
+        <li class="list-group-item">
+    <a href="https://webcms3.cse.unsw.edu.au/users/z3476304">Maryam Ghafouri</a>
+    <span class="label label-default">Tutor</span>
+  </li>
+
+        <li class="list-group-item">
+    <a href="https://webcms3.cse.unsw.edu.au/users/z5119397">Alireza Tabebordbar</a>
+    <span class="label label-default">Tutor</span>
+  </li>
+
+        <li class="list-group-item">
+    <a href="https://webcms3.cse.unsw.edu.au/users/z5039270">Sara Mumtaz</a>
+    <span class="label label-default">Tutor</span>
+  </li>
+
+
+        </ul>
+        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/activities/">Activities</a>
+        </li>
+        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#side-menu8" data-toggle="collapse" data-parent=".sidebar">
+            Course Work <span class="caret"></span>
+          </a>
+        </li>
+        <ul class="list-group collapse in" id="side-menu8">
+                  <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36371">Assignments</a>
+        </li>        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36090">Labs</a>
+        </li>        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/33288">Lectures</a>
+        </li>
+
+        </ul>
+
+        <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#side-menu9" data-toggle="collapse" data-parent=".sidebar">
+            Lecture Recording <span class="caret"></span>
+          </a>
+        </li>
+        <ul class="list-group collapse in" id="side-menu9">
+                  <li class="list-group-item ">
+          <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/34412">Lecture Recordings</a>
+        </li>
+
+        </ul>
+
+
+
+  </ul>
+  <div class="panel panel-default">
+    <div class="panel-footer">
+
+      <div class="pull-right"> 
+        <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/users/grades" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Grades"><i class="fa fa-bar-chart"></i></a>
+        <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/blogs/" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Blog"><i class="fa fa-comment"></i></a>
+        <!--TODO: actual link and change icon-->
+        <a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/wiki/" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Wiki"><i class="fa fa-asterisk"></i></a>
+      </div>
+      Milo Zhou<br>
+      <small>Student</small>
+    </div>
+  </div>
+  
+</div>
+          </div>
+          <div class="col-sm-9 col-md-9 main">
+            <p class="visible-xs hidden-print">
+              <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas" id="toggle-menu"><i class="glyphicon glyphicon-chevron-left"></i> Toggle Menu</button>
+            </p>
+<ol class="breadcrumb">
+  <li>Resources</li>
+
+  <li><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36371">Assignments</a></li>
+  <li><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36372">Week 4</a></li>
+  <li class="active">Assignment-1: MapReduce</li>
+</ol>
+<div class="page-header with-breadcrumb">
+  <h1 style="display:inline;">Assignment-1: MapReduce</h1> 
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+     <div class="clearfix">
+
+
+    </div>
+
+  
+    <br>
+
+  
+
+
+    <div role="tabpanel">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#resource_tab" aria-controls="resource_tab" role="tab" data-toggle="tab">Specification</a></li>
+        <li role="presentation"><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#submit" aria-controls="submit" role="tab" data-toggle="tab">Make Submission</a></li>
+        <li role="presentation"><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#check" id="check-a" aria-controls="check" role="tab" data-toggle="tab">Check Submission</a></li>
+        <li role="presentation"><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#collect" id="collect-a" aria-controls="collect" role="tab" data-toggle="tab">Collect Submission</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="resource_tab">  
+          <br>
+             <p>
+  In this assignment we will be working on the processing of a Movie dataset:
+  <br>
+  <a href="https://raw.githubusercontent.com/sidooms/MovieTweetings/master/latest/ratings.dat">
+   https://raw.githubusercontent.com/sidooms/MovieTweetings/master/latest/ratings.dat
+  </a>
+  <br>
+ </p>
+ <p>
+  In this dataset, each row contains a movie rating done by a user (e.g., user1 has rated
+  <i>
+   Titanic
+  </i>
+  as 10).  Here is the format of the dataset:
+  <code>
+   user_id::movie_id::rating::timestamp
+  </code>
+ </p>
+ <p>
+  In this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):
+ </p>
+ <pre>U1::M1::2::11111111
+U2::M2::3::11111111
+U2::M3::1::11111111
+U3::M1::4::11111111
+U4::M2::5::11111111
+U5::M2::3::11111111
+U5::M1::1::11111111
+U5::M3::3::11111111
+</pre>
+ <p>
+  The assumption is that User and Movie names are in String format and Rating is an Integer value. You should ignore the timestamp in the Mapper.
+ </p>
+ <p>
+  The output of your code should be in the form as below:
+ </p>
+ <pre>(M1,M2) [(U5,1,3)]
+(M2,M3) [(U5,3,3),(U2,3,1)]
+(M1,M3) [(U5,1,3)]
+</pre>
+ <p>
+  where (M,M) shows pairs of movies, [] indicates the list of users and their ratings. For example, (U5,1,3) shows U5 has rated M1 and M2 with 1 and 3 respectively.
+  <br>
+ </p>
+ <p>
+  <b>
+   (please note that Your output should exactly be formatted as the output example above.)
+  </b>
+ </p>
+ <p>
+  <br>
+ </p>
+ <p>
+  <b>
+   Tips
+  </b>
+  :
+ </p>
+ <ul>
+  <li>
+   You may need to implement more than one
+Mapper/Reducer in this assignment. You need to look at chaining in MapReduce
+jobs:
+   <a href="https://stackoverflow.com/questions/38111700/chaining-of-mapreduce-jobs#answer-38113499">
+    https://stackoverflow.com/questions/38111700/chaining-of-mapreduce-jobs#answer-38113499
+   </a>
+  </li>
+  <li>
+   You also may need a self-join to find movie pairs, the reduce-side join pattern can help:
+   <a href="https://www.edureka.co/blog/mapreduce-example-reduce-side-join/">
+    https://www.edureka.co/blog/mapreduce-example-reduce-side-join/
+   </a>
+  </li>
+  <li>
+   If the key and the values for a Mapper differ from those of Reduce, you
+need to set the following configurations:
+   <br>
+   job.setMapOutputKeyClass(), job.setOutputKeyClass(), job.setMapOutputValueClass(), job.setapOutputValueClass()
+  </li>
+  <li>
+   Do not set
+   <strong>
+    Combiner
+   </strong>
+   in this assignment (
+   <del>
+    job.setCombiner()
+   </del>
+   )
+  </li>
+  <li>
+   If the Value for the Mapper/Reducer is
+a complex object, you need to implement a Writerable Interface class
+  </li>
+  <li>
+   If the Key for the Mapper/Reducer is a complex object, you also need to implement a WritableComparable Interface
+  </li>
+  <li>
+   You can use ArrayWritable to store Array values, but you need to
+implement its toString() function to be able to write the object into a text
+file.
+  </li>
+  <li>
+   Please be aware of iterating over
+values inside a reducer (Iterable&lt;MyWritable&gt; values). When looping
+through the Iterable value list, each Object instance is reused internally by
+the reducer. So if you add them to another list, at the end of the process, all
+of the elements in the new list will be the same as the last object you added
+to the list.
+  </li>
+ </ul>
+ <h5>
+  <br>
+ </h5>
+ <h2>
+  Submission Guidelines
+ </h2>
+ <h4>
+  Submission Deadline:
+ </h4>
+ <p>
+  Tuesday the 29th of October 2019 17:59
+ </p>
+ <h5>
+  <br>
+ </h5>
+ <h4>
+  Build your Project
+ </h4>
+ <p>
+  Get and add Hadoop dependency to your project:
+ </p>
+ <p>
+  1. Create a new Java project in Eclipse
+ </p>
+ <p>
+  2. Download the dependency to your project:
+  <a href="https://github.com/mysilver/COMP9313/raw/master/Hadoop-Core.jar" target="_blank">
+   https://github.com/mysilver/COMP9313/raw/master/Hadoop-Core.jar
+  </a>
+ </p>
+ <p>
+  3. Right click on your project and add the Hadoop-Core.jar file to your project:
+ </p>
+ <p style="margin-left: 40px;">
+  Build-Path -&gt; Add External Archives
+  <br>
+ </p>
+ <h4>
+  Submit your Project
+  <br>
+ </h4>
+ <p>
+  Your code must be included (in its entirety) in the file
+  <b>
+   AssigOne{zid}.java
+  </b>
+  .  Any solution that has compilation errors will receive no more than 5 points for the entire assignment.
+ </p>
+ <p>
+  You need to test your file before submission, to make sure that it can be compiled/run in the terminal of CSE machines:
+ </p>
+ <pre>$ javac -cp ".:Hadoop-Core.jar" AssigOne{zid}.java 
+$ java -cp ".:Hadoop-Core.jar" AssigOne{zid}  INPUT_PATH OUTPUT_PATH
+</pre>
+ <p>
+  Log in to any CSE server (e.g. williams or wagner) and use the
+  <i>
+   give command
+  </i>
+  below to submit your solution:
+  <br>
+ </p>
+ <pre>$ give cs9313 assig1 AssigOne{zid}.java</pre>
+ <p>
+  where you must replace {zid} above with your own zID.
+ </p>
+ <p>
+  You can also submit your solution using WebCMS, or Give:
+ </p>
+ <p>
+  <a href="https://cgi.cse.unsw.edu.au/~give/Student/give.php">
+   https://cgi.cse.unsw.edu.au/~give/Student/give.php
+  </a>
+ </p>
+ <p>
+  If you submit your assignment more than once, we will only consider the last submission. If you face any problem while submitting your code, please e-mail the Course Admin (Maisie Badami,
+  <a href="mailto:m.badami@student.unsw.edu.au">
+   m.badami@student.unsw.edu.au
+  </a>
+  )
+  <br>
+ </p>
+ <p>
+  <b>
+   Assessment
+  </b>
+ </p>
+ <p>
+  Your source code will be manually inspected and marked based on readability and ease of understanding. We will run your code to verify that it produces correct results. The code documentation (i.e. comments in your source code) is also important. Below, we provide an indicative assessment scheme (maximum mark: 20 points):
+  <br>
+ </p>
+ <table>
+  <tbody>
+   <tr>
+    <td>
+     <p>
+      Result correctness
+     </p>
+    </td>
+    <td>
+     <p>
+      17 points
+     </p>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <p>
+      Code structure and source code documentation (comments)
+     </p>
+    </td>
+    <td>
+     <p>
+      3 points
+     </p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <p>
+  <b>
+   Late submission penalty
+  </b>
+ </p>
+ <p>
+  10% reduction of your marks for the 1st day, 30% reduction/day for the following days.
+ </p>
+ <p>
+  <b>
+   Plagiarism
+  </b>
+ </p>
+ <p>
+  This is an
+  <i>
+   individual assignment
+  </i>
+  . The work you submit must be your own work. Submission of work partially or completely derived from any other person or jointly written with any other person is not permitted. The penalties for such offence may include negative marks, automatic failure of the course and possibly other academic discipline. Assignment submissions will be examined manually.
+ </p>
+ <p>
+  Do not provide or show your assignment work to any other person - apart from the teaching staff of this course. If you knowingly provide or show your assignment work to another person for any reason, and work derived from it is submitted, you may be penalized, even if the work was submitted without your knowledge or consent. Pay attention that is also your duty to protect your code artifacts. if you are using any online solution to store your code artifacts (e.g., GitHub) then make sure to keep the reposiroty private and do not share access to anyone.
+ </p>
+ <p>
+  <i>
+   Reminder:
+  </i>
+  Plagiarism
+  <b>
+  </b>
+  is
+  <a href="https://student.unsw.edu.au/plagiarism" target="_blank">
+   defined as
+  </a>
+  using the words or ideas of others and presenting them as your own. UNSW and CSE treat plagiarism as academic misconduct, which means that it carries penalties as severe as being excluded from further study at UNSW. There are several on-line sources to help you understand what plagiarism is and how it is dealt with at UNSW:
+ </p>
+ <ul>
+  <li>
+   <a href="https://student.unsw.edu.au/plagiarism" target="_blank">
+    Plagiarism and Academic Integrity
+   </a>
+  </li>
+  <li>
+   <a href="https://www.gs.unsw.edu.au/policy/documents/plagiarismprocedure.pdf" target="_blank">
+    UNSW Plagiarism Procedure
+   </a>
+  </li>
+ </ul>
+ <p>
+  Make sure that you read and understand these. Ignorance is not accepted as an excuse for plagiarism. In particular, you are also responsible for ensuring that your assignment files are not accessible by anyone but you by setting the correct permissions in your CSE directory and code repository, if using one (e.g., Github and similar). Note also that plagiarism includes paying or asking another person to do a piece of work for you and then submitting it as your own work.
+ </p>
+ <p>
+  UNSW has an ongoing commitment to fostering a culture of learning informed by academic integrity. All UNSW staff and students have a responsibility to adhere to this principle of academic integrity. Plagiarism undermines academic integrity and is not tolerated at UNSW.
+  <br>
+ </p>
+ <p>
+  The marking scheme for this assignment is as below:
+ </p>
+ <table class="table">
+  <tbody>
+   <tr>
+    <td>
+     1. The output is generated by Hadoop MapReduce correctly
+     <strong>
+      (7 Marks)
+     </strong>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     2. The output is formatted correctly as described in the spec
+     <strong>
+      (2 marks)
+     </strong>
+     <p>
+      <br>
+     </p>
+     <p>
+      <br>
+     </p>
+     <ul>
+      <li>
+       Format must be the same as (M2,M3) [(U5,3,3),(U2,3,1)]
+      </li>
+      <li>
+       There should be no empty list like: (M2,M3) []
+      </li>
+     </ul>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     3.Custom Writables are well defined (e.g., appropriate data-types have been used without wasting memory)
+     <strong>
+      (4 marks)
+     </strong>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     4. The code could be executed in CSE machines as described in the specification of the assignment
+     <strong>
+      (2 Marks)
+     </strong>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     5. The maximum number of Mappers and Reducers is 2 (2 Mappers and 2 Reducers)
+     <strong>
+      (2 Marks)
+     </strong>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     6. Documentation and code structure. here you can clearly explain you solution in a short paragraph in the beginning of the program (no more than 300 words) and provide comments describing what each class is doing.
+     <strong>
+      (3 Marks)
+     </strong>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+            <div class="clearfix">
+              <p class="pull-left"><small>Resource created <abbr class="timeago" title="Thursday 10 October 2019, 12:01:33 PM">5 months ago</abbr>, last modified <abbr class="timeago" title="Monday 28 October 2019, 09:04:26 PM">5 months ago</abbr>.</small></p>
+            </div>
+
+
+        </div>
+        <div role="tabpanel" class="tab-pane " id="submit"> 
+          <br>
+          <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> You can also submit using <code>give cs9313 assign1 file1 file2 file3 ...</code>
+          </div>
+          <div class="alert alert-info"><i class="fa fa-info-circle"></i> Hold CTRL when clicking files to upload multiple files at the same time.</div>
+          <div class="text-center" id="submissionspin" hidden="">
+            <h1><i class="fa fa-circle-o-notch fa-spin"></i></h1>
+            <h4>Submitting...</h4>
+          </div>
+          <pre id="submissionpre" hidden=""></pre>
+          <div id="submissionform">
+            <form id="submissionform" method="post" action="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#" enctype="multipart/form-data">
+              <fieldset>
+                <div style="display:none;"><input id="csrf_token" name="csrf_token" type="hidden" value="1584014764##a13f19c294f2849a223b53aa85625665ea863045"></div>
+                  <div class="form-group ">
+      <label class="control-label">Submission Files*</label>
+    <div class="input-group">
+      <span class="input-group-btn">
+        <span class="btn btn-primary btn-file">
+          <i class="fa fa-folder-open"></i> Browse… <input id="files" multiple="" name="files" type="file">
+        </span>
+      </span>
+      <input type="text" class="form-control" readonly="">
+    </div>
+  </div>
+
+              </fieldset>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa fa-upload"></i> Submit
+              </button>
+            </form>
+            <br>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="check">    
+          <br>
+          <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> You can also check your submission using <code>9313 classrun -check assign1</code>
+          </div>
+          <div class="text-center" id="checkspin">
+            <h1><i class="fa fa-circle-o-notch fa-spin"></i></h1>
+            <h4>Fetching...</h4>
+          </div>
+          <pre id="checkpre" hidden=""></pre>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="collect">
+          <br>
+          <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> You can also collect your submission using <code>9313 classrun -collect assign1</code>
+          </div>
+          <div class="text-center" id="collectspin">
+            <h1><i class="fa fa-circle-o-notch fa-spin"></i></h1>
+            <h4>Fetching...</h4>
+          </div>
+          <pre id="collectpre" hidden=""></pre>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default"><div class="panel-heading clearfix"><h3 class="panel-title">
+      Comments
+      <div role="group" class="btn-group btn-group-xs pull-right comment-frame-header"><a title="Click to Subscribe" class="btn btn-default btn-xs"><i class="fa fa-bookmark-o"></i></a> <a title="Search" href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/forums/search?forum_choice=resource/36376" class="btn btn-default btn-xs"><i class="fa fa-search"></i></a> <a title="Forum View" href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/forums/resource/36376" class="btn btn-default btn-xs"><i class="fa fa-comments"></i></a></div></h3></div> <div class="panel-body"><!----> <div style="position: relative;"><i class="fa fa-fw fa-comment-o" style="position: absolute; padding: 10px; color: rgb(153, 153, 153);"></i> <input type="text" placeholder="Add a comment" class="form-control" style="padding-left: 30px;"></div> <!----> <hr> <ul class="comment-wrapper"><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/111.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5135154">Jiayi Ouyang</a><small><span><abbr title="Mon Nov 18 2019 10:23:20 GMT+0800 (China Standard Time)">4 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Hi, could you please tell us know when will you release assign1 mark?
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/MVIMG_20190815_151952_copy.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5059491">Danni Ovens</a><small><span><abbr title="Thu Nov 14 2019 19:29:40 GMT+0800 (China Standard Time)">4 months ago</abbr>, last modified <abbr title="Thu Nov 14 2019 19:30:49 GMT+0800 (China Standard Time)">4 months ago</abbr></span></small></header> <div class="comment-body"> <p>
+  Hi, when will we get the results for this assignment? I would like to use the (relevant) feedback to make sure I don't repeat any mistakes with assignment 2 (eg regarding documentation or custom data structures)
+  <br>
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5198066">Zhihao Zhang</a><small><span><abbr title="Tue Nov 19 2019 18:19:17 GMT+0800 (China Standard Time)">4 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Yeah, I want the result for assignment 1 too.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5179653">Binru Wang</a><small><span><abbr title="Wed Oct 30 2019 13:01:40 GMT+0800 (China Standard Time)">4 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  <img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Screen_Shot_2019-10-30_at_12.58.40.png">
+ </p>
+ <p>
+  Hi,
+ </p>
+ <p>
+  Just make sure that my last submission is actually earlier than the deadline. I think the system reacts according to the old deadline.
+ </p>
+ <p>
+  Best,
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Man.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a><small><span><abbr title="Wed Oct 30 2019 14:23:54 GMT+0800 (China Standard Time)">4 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  That's fine, we won't consider it as a late submission, although I would recommend not to leave the submission to the last day or hours of deadline
+ </p>
+ <p>
+  <br>
+ </p>
+ <p>
+  Thanks
+ </p>
+ <p>
+  Maisie
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5178164">Run Wang</a><small><span><abbr title="Wed Oct 30 2019 10:59:28 GMT+0800 (China Standard Time)">4 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  This is my latest submission, although the date is before the due, but the system shows I submitted late, does that matters?
+ </p>
+ <pre>Most recent submission: -rw------- z5178164/z5178164 12140 2019-10-29 00:25 AssigOnez5178164.java
+</pre></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Man.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a><small><span><abbr title="Wed Oct 30 2019 14:21:36 GMT+0800 (China Standard Time)">4 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  That's fine, we won't consider it as a late submission.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3485805">Xiuye Yuan</a><small><span><abbr title="Tue Oct 29 2019 13:24:45 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Hi,
+ </p>
+ <p>
+  As the spec states: "The assumption is that User and Movie names are in String format and Rating is an Integer value."
+ </p>
+ <p>
+  May I also make an assumption that the Rating is in string format?
+ </p>
+ <p>
+  Best Regards.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Man.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a><small><span><abbr title="Tue Oct 29 2019 15:32:30 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  no you can't, it is what is clearly stated in the spec.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3485805">Xiuye Yuan</a><small><span><abbr title="Tue Oct 29 2019 15:54:14 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Got it, Thanks for your reply!
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5059632">Jacob Sturges</a><small><span><abbr title="Mon Oct 28 2019 21:29:43 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Hey I just submitted my assignment. According to webCMS I still have several hours to submit the assignment. Though When I look at my submission give it says my submission is 4 hours late. I was just wondering which of these is correct
+ </p>
+ <p>
+  <img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Screen_Shot_2019-10-28_at_9.27.53_pm.png">
+ </p>
+ <p>
+  <img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Screen_Shot_2019-10-28_at_9.27.11_pm.png">
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Man.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a><small><span><abbr title="Tue Oct 29 2019 09:41:51 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  it was a system issue that is fixed now, would you please check again and let me know if it is still showing the deley
+ </p>
+ <p>
+  thanks
+ </p>
+ <p>
+  Maisie
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5059632">Jacob Sturges</a><small><span><abbr title="Tue Oct 29 2019 09:50:40 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Hey it looks like the still says my submission was late. Though it says a submission now would be early.
+ </p>
+ <p>
+  <img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Screen_Shot_2019-10-29_at_9.49.44_am.png">
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Man.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a><small><span><abbr title="Tue Oct 29 2019 10:00:06 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  maybe submit it again and see what it says, it should say it is early.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5198992">Yijia Huang</a><small><span><abbr title="Mon Oct 28 2019 20:14:17 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> Can I use an Text format replace the Sequence format as an output format for the first map. Does it waste more or not?
+</div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/me.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5138589">Mohammadali Yaghoubzadehfard</a><small><span><abbr title="Tue Oct 29 2019 11:00:11 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Since I do not know what you have done in your mapper/reducer, I cannot say much. But the safe side is to use custom writables for any pair/triple/list object.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5180907">Yuehui Chu</a><small><span><abbr title="Mon Oct 28 2019 15:22:06 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Hi, I have an trouble with my output . I do know why there are two (m2,m3).  can anyone tell me why don't this two same key merged after map?
+ </p>
+ <p>
+  <br>
+ </p>
+ <p>
+  <img>
+ </p>
+ <p>
+  <br>
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/me.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5138589">Mohammadali Yaghoubzadehfard</a><small><span><abbr title="Tue Oct 29 2019 10:57:43 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Most probably, your comareto function is not working as you expect. It might be because of white spaces in strings, or using == instead of equals to compare string values.
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5093599">Yuexuan Liu</a><small><span><abbr title="Sun Oct 27 2019 22:33:06 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Do we have to sort the movie pairs inside the parentheses? Like in the example, currently what I get is
+ </p>
+ <pre>(M2,M1) [(U5,3,1)]
+</pre>
+ <p>
+  Do I have sort it into
+ </p>
+ <pre>(M1,M2) [(U5,1,3)]
+</pre>
+ <p>
+  Or we just deal with the dataset, assume that movieid is integer?
+  <br>
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/Man.jpg" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3500952">Maisie Badami</a><small><span><abbr title="Mon Oct 28 2019 10:06:19 GMT+0800 (China Standard Time)">5 months ago</abbr>, last modified <abbr title="Tue Oct 29 2019 10:20:46 GMT+0800 (China Standard Time)">5 months ago</abbr></span></small></header> <div class="comment-body"> <p>
+  Movie IDs  should be considered as string, however sorting the output  is not nesesory
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3462149">Sankalp Shukla</a><small><span><abbr title="Sun Oct 27 2019 20:51:31 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  Hi,
+ </p>
+ <p>
+  I have implemented an ArrayWritable variable to display the list of triples (UID, Rating, Rating) in the final output. However my output is in the form:
+ </p>
+ <p>
+  (M2,M3)SPACE[(U2,3,1),SPACE(U5,3,3)] instead of (M2,M3)SPACE[(U2,3,1),(U5,3,3)].
+ </p>
+ <p>
+  I can output it in the second form if I use something like:
+ </p>
+ <p>
+  new Text("[" + output + "]")
+ </p>
+ <p>
+  According to the spec, this isn't allowed as it is a complex output. So I'm wondering whether it is acceptable to output it the first way (with spaces between array elements) or whether I can use the Text function to obtain the required output.
+ </p>
+ <p>
+  Cheers,
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment light"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z5245136">Con Tieu-Vinh</a><small><span><abbr title="Mon Oct 28 2019 09:09:13 GMT+0800 (China Standard Time)">5 months ago</abbr>, last modified <abbr title="Mon Oct 28 2019 09:09:52 GMT+0800 (China Standard Time)">5 months ago</abbr></span></small></header> <div class="comment-body"> <p>
+  Hi Sankalp,
+ </p>
+ <p>
+  Rather than outputting Text from your final reducer, you could still output an ArrayWritable but modify the toString() method so that it does the same thing as "[" + output + "]" without using the Text type.
+  <br>
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"><li class="comment dark"><!----> <div class="profile-mask"><img src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/default_avatar.png" class="comment-profile"></div> <div class="comment-content"><header><a href="https://webcms3.cse.unsw.edu.au/users/z3462149">Sankalp Shukla</a><small><span><abbr title="Mon Oct 28 2019 14:22:36 GMT+0800 (China Standard Time)">5 months ago</abbr><!----></span></small></header> <div class="comment-body"> <p>
+  That works! Thanks!
+ </p></div> <footer><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#">Reply</a><!----><!----></footer></div> <!----> <!----> <ul class="replies"></ul></li></ul></li></ul></li></ul> <!----> <button class="btn btn-default">
+        Load More Comments
+      </button> <!----></div></div>
+  </div>
+</div>
+          </div>
+      </div>
+      <div class="row hidden-print">
+        <div class="col-sm-12">
+          <hr>
+          <p class="pull-right"><a href="https://webcms3.cse.unsw.edu.au/COMP9313/19T3/resources/36376#webcms3top">Back to top <i class="fa fa-caret-up"></i></a></p>
+          <div class="pull-left">
+
+          <strong>COMP9313 19T3 (Big Data Management)</strong>
+          is powered by <a href="https://webcms3.cse.unsw.edu.au/about">WebCMS3</a>
+          <h6><small>CRICOS Provider No. 00098G</small></h6>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/manifest.cfb3a155968bb33441c3.js"></script>
+    <script src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/vendor.ccafba1973f262c84499.js"></script>
+    <script src="./Assignment-1_ MapReduce _ COMP9313 19T3 _ WebCMS3_files/app.b49dff5297717517af10.js"></script>
+
+
+  <script type="text/javascript">
+    function get_submissioninfo(item, url) {
+      $('#' + item + "-a").one('click', function() {
+        $.ajax({
+          url: url,
+          type: "GET",
+          dataType: "json"
+        })
+        .done(function(data) {
+          $("#" + item + "spin").hide();
+          $("#" + item + "pre").show();
+          $('#' + item + 'pre').text(data["message"]);
+        })
+        .fail(function() {
+          $("#" + item + "spin").hide();
+          $("#" + item + "pre").show();
+          $('#' + item + 'pre').text("An unexpected error has occurred.");
+        });
+      });
+    }
+    get_submissioninfo('check', "/COMP9313/19T3/activities/submissions/api/check/assign1/z5223541");
+    get_submissioninfo('collect', "/COMP9313/19T3/activities/submissions/api/collect/assign1/z5223541");
+
+    /*
+    $("#submissionform").submit(function() {
+      $("#submissionform").hide();
+      $('#submissionpre').hide();
+      $('#submissionspin').show();
+
+      var url = "/COMP9313/19T3/activities/submissions/api/give/assign1/z5223541";
+      
+      var formData = new FormData();
+
+      $.ajax({
+          url: url,
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          dataType: "json"
+      })
+      .done(function(data) {
+        $('#submissionspin').hide();
+        $('#submissionpre').text(data["message"]);
+        $('#submissionpre').show();
+        $('#submissionform').show();
+      })
+      .fail(function() {
+        $('#submissionspin').hide();
+        $('#submissionpre').text("An unexpected error has occurred.");
+        $('#submissionpre').show();
+        $('#submissionform').show();
+      });
+
+      return false;
+    });
+    */
+  </script>
+
+<script>
+
+    webcms.renderComments("#messaging-wrapper", {
+      object_type: 'resource',
+      object_id: 36376,
+      url: '/messages/',
+      course: '3267',
+  });
+
+</script>
+
+<script>
+$(function() {
+  $('*[data-bootbox="resource-delete-heading"]').each(function() {
+    $(this).click(function(e) {
+      e.preventDefault();
+      var location = $(this).attr('href');
+      bootbox.dialog({
+        message: "Are you sure you wish to delete this resource heading?",
+        buttons: {
+          main: {
+            label: "No",
+            className: "btn-default",
+            callback: function() { }
+          },
+          children: {
+            label: "Yes, and delete all children too",
+            className: "btn-primary",
+            callback: function() {
+              window.location.replace(location + "?children=1");
+            }
+          },
+          just: {
+            label: "Yes, and move children to parent",
+            className: "btn-primary",
+            callback: function() {
+              window.location.replace(location);
+            }
+          }
+        }
+      });
+    });
+  });
+
+});
+</script>
+
+<script>
+$(function() {
+  $('*[data-bootbox="resource-delete"]').each(function() {
+    $(this).click(function(e) {
+      e.preventDefault();
+      var location = $(this).attr('href');
+
+      bootbox.confirm("Are you sure you wish to delete this resource?", function(confirmed) {
+        if (confirmed) {
+          window.location.replace(location);
+        }
+      });
+    });
+  });
+});
+</script>
+
+
+
+    <script>
+      jQuery.timeago.settings.allowFuture = true;
+
+      $(function() {
+        $('*[id^="redactor"]').each(function () {
+          $(this).redactor({
+            imageUpload: "/files/redactor/upload",
+            plugins: ['table', 'fontsize', 'fontcolor', 'video', 'template']
+          });
+
+        });
+          $('.redactor').redactor({
+            imageUpload: "/files/redactor/upload",
+            plugins: ['table', 'fontsize', 'fontcolor', 'video', 'template']
+          });
+      });
+
+      $(document).ready(function() {
+        /* hack to remove awful extra padding */
+        $('.redactor-box').attr('style', 'margin: 0 !important; padding: 0 !important;');
+
+        /* force text cursor in redactor editing field */
+        $('.redactor-editor').each(function () {
+          $(this).attr('style', 'cursor: text;');
+        });
+      });
+
+      $(document).ready(function() {
+        $('[data-toggle=buttons]').click(function() {
+          /* hack to get toolbar to show */
+          setTimeout(function() {$('.redactor').scroll()}, 0);
+        });
+      });
+
+    </script>
+    <script>
+        $(document).on('change', '.btn-file :file', function() {
+          var input = $(this),
+              numFiles = input.get(0).files ? input.get(0).files.length : 1,
+              label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+          input.trigger('fileselect', [numFiles, label]);
+        });
+
+        $(document).ready( function() {
+            $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+        });
+
+      $('[data-toggle="popover"]').popover();
+    </script>
+
+    <script type="text/javascript">
+      jQuery(document).ready(function() {
+        jQuery("abbr.timeago").timeago();
+      });
+
+      $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+      $(document).ready(function() {
+        $('[data-toggle=offcanvas]').click(function() {
+          $('.row-offcanvas').toggleClass('active');
+        });
+      });
+    </script>
+
+
+
+
+  
+</div></body></html>
