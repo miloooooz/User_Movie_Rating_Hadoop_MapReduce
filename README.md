@@ -1,7 +1,7 @@
 # User_Movie_Rating_Hadoop_MapReduce
 Big Data Management Project-User_Movie_Rating_Hadoop_MapReduce
 ## Introduction:
-This program summarize the intput.txt which contains rows of **userId, movieId, rating, timestamp** and format them into the key value pairsr where key is the movie pairs and value is the array of User-Rating triples.
+This program summarize the intput.txt which contains rows of **userId, movieId, rating, timestamp** and format them into the key value pairs where key is the movie pairs and value is the array of User-Rating triples.
 
 Here are one example:
 
