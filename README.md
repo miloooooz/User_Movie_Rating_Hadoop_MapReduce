@@ -5,7 +5,7 @@ This program summarize the intput.txt which contains rows of **userId, movieId, 
 
 Here are one example:
 
-> ### Input format:
+### Input format:
 > U1::M1::2::11111111
 > 
 > U2::M2::3::11111111
@@ -22,7 +22,7 @@ Here are one example:
 >
 > U5::M3::3::11111111
 
-> ### Output format:
+### Output format:
 > (M1,M2) [(U5,1,3)]
 >
 > (M2,M3) [(U5,3,3),(U2,3,1)]
