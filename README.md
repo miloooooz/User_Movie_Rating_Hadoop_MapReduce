@@ -6,32 +6,29 @@ This program summarize the intput.txt which contains rows of **userId, movieId, 
 Here are one example:
 
 ### Input format:
-> N0,N1,4
+> U1::M1::2::11111111
 > 
-> N0,N2,3
+> U2::M2::3::11111111
+> 
+> U2::M3::1::11111111
+> 
+> U3::M1::4::11111111
+> 
+> U4::M2::5::11111111
 >
-> N1,N2,2
+> U5::M2::3::11111111
 >
-> N1,N3,2
+> U5::M1::1::11111111
 >
-> N2,N3,7
->
-> N3,N4,2
->
-> N4,N0,4
->
-> N4,N1,4
->
-> N4,N5,6
+> U5::M3::3::11111111
 
 ### Output format:
-> N2,3,N0-N2
+> (M1,M2) [(U5,1,3)]
 >
-> N1,4,N0-N1
+> (M2,M3) [(U5,3,3),(U2,3,1)]
 >
-> N3,6,N0-N1-N3
->
-> ...
+> (M1,M3) [(U5,1,3)]
+
 
 ## Instruction:
 Download the ***AssigOnez5223541.java*** and ***Hadoop-Core.jar***.
